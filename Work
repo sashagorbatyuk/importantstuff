@@ -1,0 +1,65 @@
+// Завдання 1
+let array1 = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+
+// 1. Вивід масиву
+function printArray(arr) {
+    console.log("Масив:", arr);
+}
+
+// 2. Вивід лише парних елементів
+function printEvenElements(arr) {
+    console.log("Парні елементи:", arr.filter(num => num % 2 === 0));
+}
+
+// 3. Сума всіх елементів
+function sumArray(arr) {
+    return arr.reduce((sum, num) => sum + num, 0);
+}
+
+// 4. Максимальний елемент
+function maxElement(arr) {
+    return Math.max(...arr);
+}
+
+// 5. Додавання елемента за індексом
+function addElementAt(arr, index, element) {
+    arr.splice(index, 0, element);
+    return arr;
+}
+
+// 6. Видалення елемента за індексом
+function removeElementAt(arr, index) {
+    arr.splice(index, 1);
+    return arr;
+}
+
+// Завдання 2
+let array2 = Array.from({ length: 5 }, () => Math.floor(Math.random() * 100));
+
+// 1. Об'єднання без повторень
+function unionArrays(arr1, arr2) {
+    return [...new Set([...arr1, ...arr2])];
+}
+
+// 2. Спільні елементи без повторень
+function intersectionArrays(arr1, arr2) {
+    return [...new Set(arr1.filter(item => arr2.includes(item)))];
+}
+
+// 3. Різниця масивів (елементи з першого, яких немає у другому)
+function differenceArrays(arr1, arr2) {
+    return arr1.filter(item => !arr2.includes(item));
+}
+
+// Приклад використання:
+printArray(array1);
+printEvenElements(array1);
+console.log("Сума:", sumArray(array1));
+console.log("Максимум:", maxElement(array1));
+console.log("Після додавання:", addElementAt([...array1], 3, 99));
+console.log("Після видалення:", removeElementAt([...array1], 3));
+
+printArray(array2);
+console.log("Об'єднання:", unionArrays(array1, array2));
+console.log("Спільні:", intersectionArrays(array1, array2));
+console.log("Різниця:", differenceArrays(array1, array2));
