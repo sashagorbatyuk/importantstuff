@@ -1,0 +1,62 @@
+// 1. Запросити дані та показати їх
+const data = prompt("Введіть будь-які дані:");
+alert("Ви ввели: " + data);
+
+// 2. Привітання з ім'ям
+const name = prompt("Введіть ваше ім'я:");
+alert(`Привіт, ${name}!`);
+
+// 3. Порахувати вік за роком народження
+const CURRENT_YEAR = 2025;
+const birthYear = prompt("Введіть ваш рік народження:");
+const age = CURRENT_YEAR - Number(birthYear);
+alert(`Вам ${age} років.`);
+
+// 4. Периметр квадрата
+const side = prompt("Введіть довжину сторони квадрата:");
+const perimeter = 4 * Number(side);
+alert(`Периметр квадрата: ${perimeter}`);
+
+// 5. Площа кола
+const radius = prompt("Введіть радіус кола:");
+const area = Math.PI * Math.pow(Number(radius), 2);
+alert(`Площа кола: ${area.toFixed(2)}`);
+
+// 6. Швидкість руху
+const distance = prompt("Введіть відстань між містами (км):");
+const time = prompt("За скільки годин хочете дістатися?");
+const speed = Number(distance) / Number(time);
+alert(`Вам потрібно рухатися зі швидкістю ${speed.toFixed(2)} км/год`);
+
+// 7. Конвертор валют (долари в євро)
+const EXCHANGE_RATE = 0.92; // курс долара до євро
+const dollars = prompt("Введіть суму у доларах:");
+const euros = Number(dollars) * EXCHANGE_RATE;
+alert(`Це буде приблизно ${euros.toFixed(2)} євро.`);
+
+// 8. Скільки файлів вміститься на флешку
+const flashDriveGB = prompt("Введіть обсяг флешки в ГБ:");
+const fileSizeMB = 820;
+const totalMB = Number(flashDriveGB) * 1024;
+const fileCount = Math.floor(totalMB / fileSizeMB);
+alert(`На флешку вміститься ${fileCount} файлів по 820 МБ.`);
+
+// 9. Купівля шоколадок і здача
+const money = prompt("Введіть суму грошей у гаманці:");
+const price = prompt("Вартість однієї шоколадки:");
+const chocolates = Math.floor(Number(money) / Number(price));
+const change = Number(money) - chocolates * Number(price);
+alert(`Ви можете купити ${chocolates} шоколадок, здача: ${change.toFixed(2)}.`);
+
+// 10. Паліндром (перевернуте тризначне число)
+const number = prompt("Введіть тризначне число:");
+const hundreds = Math.floor(Number(number) / 100);
+const tens = Math.floor((Number(number) % 100) / 10);
+const units = Number(number) % 10;
+const palindrome = `${units}${tens}${hundreds}`;
+alert(`Перевернуте число: ${palindrome}`);
+
+// 11. Парне чи непарне (без if та switch)
+const num = prompt("Введіть ціле число:");
+const isEven = Number(num) % 2 === 0;
+alert(isEven && "парне" || "непарне");
