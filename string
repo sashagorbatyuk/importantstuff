@@ -1,0 +1,43 @@
+// 1. Порахувати кількість голосних у рядку
+function countVowels(str) {
+  const vowels = "aeiouAEIOU";
+  let count = 0;
+  for (let char of str) {
+    if (vowels.includes(char)) count++;
+  }
+  return count;
+}
+// Приклад:
+console.log(countVowels("Hello world")); // 3
+
+// 2. Зробити першу літеру кожного слова великою (capitalize)
+function capitalizeWords(str) {
+  return str
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+console.log(capitalizeWords("javascript is fun")); // "Javascript Is Fun"
+
+// 3. Перевірити, чи є рядок паліндромом
+function isPalindrome(str) {
+  const normalized = str.toLowerCase();
+  return normalized === normalized.split("").reverse().join("");
+}
+console.log(isPalindrome("racecar")); // true
+
+// 4. Замінити всі пробіли на "-"
+function replaceSpaces(str) {
+  return str.replace(/ /g, "-");
+}
+console.log(replaceSpaces("hello world js")); // "hello-world-js"
+
+// 5. Порахувати кількість входжень певного символу в рядку
+function countChar(str, char) {
+  let count = 0;
+  for (let c of str) {
+    if (c === char) count++;
+  }
+  return count;
+}
+console.log(countChar("banana", "a")); // 3
