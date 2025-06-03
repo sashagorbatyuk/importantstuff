@@ -1,65 +1,105 @@
-// Завдання 1
-let array1 = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+// Завдання 1: Об'єкт автомобіля
+const car = {
+    brand: "Tesla",
+    model: "Model S",
+    averageSpeed: 90, // км/год
 
-// 1. Вивід масиву
-function printArray(arr) {
-    console.log("Масив:", arr);
-}
+    displayInfo() {
+        console.log(`Марка: ${this.brand}, Модель: ${this.model}, Середня швидкість: ${this.averageSpeed} км/год`);
+    },
 
-// 2. Вивід лише парних елементів
-function printEvenElements(arr) {
-    console.log("Парні елементи:", arr.filter(num => num % 2 === 0));
-}
+    calculateTravelTime(distance) {
+        const travelHours = distance / this.averageSpeed;
+        const breaks = Math.floor(travelHours / 4);
+        const totalTime = travelHours + breaks;
+        console.log(`Для подолання ${distance} км знадобиться приблизно ${totalTime.toFixed(2)} годин (враховуючи перерви).`);
+        return totalTime;
+    }
+};
 
-// 3. Сума всіх елементів
-function sumArray(arr) {
-    return arr.reduce((sum, num) => sum + num, 0);
-}
+// Завдання 2: Об'єкт дробу
+const fraction = (numerator, denominator) => ({
+    numerator,
+    denominator,
 
-// 4. Максимальний елемент
-function maxElement(arr) {
-    return Math.max(...arr);
-}
+    add(other) {
+        const newNumerator = this.numerator * other.denominator + other.numerator * this.denominator;
+        const newDenominator = this.denominator * other.denominator;
+        return fraction(newNumerator, newDenominator).reduce();
+    },
 
-// 5. Додавання елемента за індексом
-function addElementAt(arr, index, element) {
-    arr.splice(index, 0, element);
-    return arr;
-}
+    subtract(other) {
+        const newNumerator = this.numerator * other.denominator - other.numerator * this.denominator;
+        const newDenominator = this.denominator * other.denominator;
+        return fraction(newNumerator, newDenominator).reduce();
+    },
 
-// 6. Видалення елемента за індексом
-function removeElementAt(arr, index) {
-    arr.splice(index, 1);
-    return arr;
-}
+    multiply(other) {
+        const newNumerator = this.numerator * other.numerator;
+        const newDenominator = this.denominator * other.denominator;
+        return fraction(newNumerator, newDenominator).reduce();
+    },
 
-// Завдання 2
-let array2 = Array.from({ length: 5 }, () => Math.floor(Math.random() * 100));
+    divide(other) {
+        const newNumerator = this.numerator * other.denominator;
+        const newDenominator = this.denominator * other.numerator;
+        return fraction(newNumerator, newDenominator).reduce();
+    },
 
-// 1. Об'єднання без повторень
-function unionArrays(arr1, arr2) {
-    return [...new Set([...arr1, ...arr2])];
-}
+    reduce() {
+        const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+        const commonDivisor = gcd(this.numerator, this.denominator);
+        return fraction(this.numerator / commonDivisor, this.denominator / commonDivisor);
+    },
 
-// 2. Спільні елементи без повторень
-function intersectionArrays(arr1, arr2) {
-    return [...new Set(arr1.filter(item => arr2.includes(item)))];
-}
+    display() {
+        console.log(`${this.numerator}/${this.denominator}`);
+    }
+});
 
-// 3. Різниця масивів (елементи з першого, яких немає у другому)
-function differenceArrays(arr1, arr2) {
-    return arr1.filter(item => !arr2.includes(item));
-}
+// Завдання 3: Об'єкт часу
+const time = {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
 
-// Приклад використання:
-printArray(array1);
-printEvenElements(array1);
-console.log("Сума:", sumArray(array1));
-console.log("Максимум:", maxElement(array1));
-console.log("Після додавання:", addElementAt([...array1], 3, 99));
-console.log("Після видалення:", removeElementAt([...array1], 3));
+    displayTime() {
+        console.log(`${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')}:${String(this.seconds).padStart(2, '0')}`);
+    },
 
-printArray(array2);
-console.log("Об'єднання:", unionArrays(array1, array2));
-console.log("Спільні:", intersectionArrays(array1, array2));
-console.log("Різниця:", differenceArrays(array1, array2));
+    addSeconds(seconds) {
+        let totalSeconds = this.hours * 3600 + this.minutes * 60 + this.seconds + seconds;
+        this.updateFromTotalSeconds(totalSeconds);
+    },
+
+    addMinutes(minutes) {
+        this.addSeconds(minutes * 60);
+    },
+
+    addHours(hours) {
+        this.addSeconds(hours * 3600);
+    },
+
+    updateFromTotalSeconds(totalSeconds) {
+        totalSeconds = ((totalSeconds % 86400) + 86400) % 86400; // Запобігання негативному часу
+        this.hours = Math.floor(totalSeconds / 3600);
+        this.minutes = Math.floor((totalSeconds % 3600) / 60);
+        this.seconds = totalSeconds % 60;
+    }
+};
+
+
+Код реалізує три об'єкти відповідно до поставлених завдань:
+
+1. Об'єкт автомобіля: Містить методи для виведення інформації про авто та розрахунку часу подорожі з урахуванням перерв.
+
+
+2. Об'єкт дробу: Операції додавання, віднімання, множення, ділення, а також скорочення дробів.
+
+
+3. Об'єкт часу: Реалізує зміну часу (секунди, хвилини, години) з урахуванням переповнення.
+
+
+
+Якщо потрібно внести корективи або доповнення — повідомте! 😊
+
