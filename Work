@@ -1,14 +1,24 @@
-// Завдання 1: Об'єкт автомобіля
 const car = {
     brand: "Tesla",
     model: "Model S",
     averageSpeed: 90, // км/год
+    description: "Електромобіль преміум класу",
+    price: 79999, // ціна у доларах
+
+    validate() {
+        if (!this.brand || !this.model || !this.description || !this.price) {
+            throw new Error("Усі поля (марка, модель, опис, ціна) повинні бути заповнені.");
+        }
+    },
 
     displayInfo() {
+        this.validate(); // Перевірка перед виводом
         console.log(`Марка: ${this.brand}, Модель: ${this.model}, Середня швидкість: ${this.averageSpeed} км/год`);
+        console.log(`Опис: ${this.description}, Ціна: $${this.price}`);
     },
 
     calculateTravelTime(distance) {
+        this.validate(); // Перевірка перед розрахунком
         const travelHours = distance / this.averageSpeed;
         const breaks = Math.floor(travelHours / 4);
         const totalTime = travelHours + breaks;
@@ -17,89 +27,24 @@ const car = {
     }
 };
 
-// Завдання 2: Об'єкт дробу
-const fraction = (numerator, denominator) => ({
-    numerator,
-    denominator,
+try {
+    car.displayInfo();
+    car.calculateTravelTime(300);
+} catch (error) {
+    console.error(error.message);
+}
 
-    add(other) {
-        const newNumerator = this.numerator * other.denominator + other.numerator * this.denominator;
-        const newDenominator = this.denominator * other.denominator;
-        return fraction(newNumerator, newDenominator).reduce();
-    },
-
-    subtract(other) {
-        const newNumerator = this.numerator * other.denominator - other.numerator * this.denominator;
-        const newDenominator = this.denominator * other.denominator;
-        return fraction(newNumerator, newDenominator).reduce();
-    },
-
-    multiply(other) {
-        const newNumerator = this.numerator * other.numerator;
-        const newDenominator = this.denominator * other.denominator;
-        return fraction(newNumerator, newDenominator).reduce();
-    },
-
-    divide(other) {
-        const newNumerator = this.numerator * other.denominator;
-        const newDenominator = this.denominator * other.numerator;
-        return fraction(newNumerator, newDenominator).reduce();
-    },
-
-    reduce() {
-        const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
-        const commonDivisor = gcd(this.numerator, this.denominator);
-        return fraction(this.numerator / commonDivisor, this.denominator / commonDivisor);
-    },
-
-    display() {
-        console.log(`${this.numerator}/${this.denominator}`);
-    }
-});
-
-// Завдання 3: Об'єкт часу
-const time = {
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-
-    displayTime() {
-        console.log(`${String(this.hours).padStart(2, '0')}:${String(this.minutes).padStart(2, '0')}:${String(this.seconds).padStart(2, '0')}`);
-    },
-
-    addSeconds(seconds) {
-        let totalSeconds = this.hours * 3600 + this.minutes * 60 + this.seconds + seconds;
-        this.updateFromTotalSeconds(totalSeconds);
-    },
-
-    addMinutes(minutes) {
-        this.addSeconds(minutes * 60);
-    },
-
-    addHours(hours) {
-        this.addSeconds(hours * 3600);
-    },
-
-    updateFromTotalSeconds(totalSeconds) {
-        totalSeconds = ((totalSeconds % 86400) + 86400) % 86400; // Запобігання негативному часу
-        this.hours = Math.floor(totalSeconds / 3600);
-        this.minutes = Math.floor((totalSeconds % 3600) / 60);
-        this.seconds = totalSeconds % 60;
-    }
+// Приклад з невалідним об’єктом
+const invalidCar = {
+    brand: "BMW",
+    model: "",
+    averageSpeed: 100,
+    description: "",
+    price: null
 };
 
-
-Код реалізує три об'єкти відповідно до поставлених завдань:
-
-1. Об'єкт автомобіля: Містить методи для виведення інформації про авто та розрахунку часу подорожі з урахуванням перерв.
-
-
-2. Об'єкт дробу: Операції додавання, віднімання, множення, ділення, а також скорочення дробів.
-
-
-3. Об'єкт часу: Реалізує зміну часу (секунди, хвилини, години) з урахуванням переповнення.
-
-
-
-Якщо потрібно внести корективи або доповнення — повідомте! 😊
-
+try {
+    invalidCar.displayInfo();
+} catch (error) {
+    console.error(error.message); // Помилка: Усі поля (марка, модель, опис, ціна) повинні бути заповнені.
+}
