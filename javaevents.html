@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Список завдань</title>
+  <style>
+    body { font-family: Arial; max-width: 500px; margin: auto; padding: 20px; }
+    li.done { text-decoration: line-through; color: gray; }
+    button { margin-left: 5px; }
+    #filters button.active { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Список завдань</h1>
+  <input type="text" id="taskInput" placeholder="Нове завдання">
+  <button onclick="addTask()">Додати</button>
+  <button onclick="deleteAllTasks()">Видалити всі</button>
+  <p>Активні завдання: <span id="activeCount">0</span></p>
+
+  <div id="filters">
+    <button onclick="setFilter('all')" class="active">Усі</button>
+    <button onclick="setFilter('active')">Невиконані</button>
+    <button onclick="setFilter('completed')">Виконані</button>
+  </div>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    let tasks = [];
+    let filter = 'all';
+
+    function renderTasks() {
+      const list = document.getElementById('taskList');
+      list.innerHTML = '';
+      let activeCount = 0;
+
+      tasks.forEach((task, index) => {
+        if (filter === 'completed' && !task.done) return;
+        if (filter === 'active' && task.done) return;
+
+        const li = document.createElement('li');
+        li.className = task.done ? 'done' : '';
+        const text = document.createElement('span');
+        text.textContent = task.text;
+        text.onclick = () => toggleTask(index);
+
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Редагувати';
+        editBtn.onclick = () => editTask(index);
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Видалити';
+        deleteBtn.onclick = () => deleteTask(index);
+
+        li.append(text, editBtn, deleteBtn);
+        list.appendChild(li);
+
+        if (!task.done) activeCount++;
+      });
+
+      document.getElementById('activeCount').textContent = activeCount;
+    }
+
+    function addTask() {
+      const input = document.getElementById('taskInput');
+      const text = input.value.trim();
+      if (!text) return alert("Завдання не може бути порожнім!");
+      if (tasks.some(task => task.text === text)) return alert("Таке завдання вже існує!");
+
+      tasks.push({ text, done: false });
+      input.value = '';
+      renderTasks();
+    }
+
+    function toggleTask(index) {
+      tasks[index].done = !tasks[index].done;
+      renderTasks();
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
+    }
+
+    function deleteAllTasks() {
+      if (confirm("Ви дійсно хочете видалити всі завдання?")) {
+        tasks = [];
+        renderTasks();
+      }
+    }
+
+    function setFilter(newFilter) {
+      filter = newFilter;
+      document.querySelectorAll('#filters button').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`#filters button[onclick="setFilter('${filter}')"]`).classList.add('active');
+      renderTasks();
+    }
+
+    function editTask(index) {
+      const newText = prompt("Редагувати завдання:", tasks[index].text);
+      if (newText === null) return; // скасування
+      const trimmed = newText.trim();
+      if (!trimmed) return alert("Текст не може бути порожнім!");
+      if (tasks.some((task, i) => task.text === trimmed && i !== index))
+        return alert("Таке завдання вже існує!");
+
+      tasks[index].text = trimmed;
+      renderTasks();
+    }
+
+    renderTasks();
+  </script>
+</body>
+</html>
