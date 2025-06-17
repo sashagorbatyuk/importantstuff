@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Інформація про браузер</title>
+  <style>
+    body.light {
+      background: white;
+      color: black;
+    }
+    body.dark {
+      background: #121212;
+      color: white;
+    }
+    button {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="greeting"></h1>
+  <div id="info"></div>
+  <p>URL сторінки: <span id="url"></span></p>
+  <p>Час: <span id="clock"></span></p>
+
+  <button onclick="addHash()">Додати #profile до URL</button>
+  <button onclick="changeName()">Змінити ім’я</button>
+  <button onclick="clearName()">Стерти ім’я</button>
+  <button onclick="openGoogle()">Відкрити Google</button>
+  <button onclick="toggleTheme()">Перемкнути тему</button>
+  <button onclick="clearCookies()">Очистити всі куки</button>
+
+  <hr>
+  <button onclick="goTo('#home')">Додому</button>
+  <button onclick="goTo('#about')">Про нас</button>
+  <button onclick="goTo('#contact')">Контакти</button>
+  <button onclick="history.back()">← Назад</button>
+  <button onclick="history.forward()">Вперед →</button>
+
+  <script>
+    // Тема
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme;
+
+    function toggleTheme() {
+      const newTheme = document.body.className === 'light' ? 'dark' : 'light';
+      document.body.className = newTheme;
+      localStorage.setItem('theme', newTheme);
+    }
+
+    // Інформація про браузер та екран
+    document.getElementById('info').innerHTML = `
+      <strong>User Agent:</strong> ${navigator.userAgent}<br>
+      <strong>Мова:</strong> ${navigator.language}<br>
+      <strong>Платформа:</strong> ${navigator.platform}<br>
+      <strong>Ширина екрана:</strong> ${screen.width}px<br>
+      <strong>Висота екрана:</strong> ${screen.height}px<br>
+      <strong>Доступна ширина:</strong> ${screen.availWidth}px<br>
+      <strong>Доступна висота:</strong> ${screen.availHeight}px
+    `;
+
+    // URL
+    document.getElementById('url').textContent = window.location.href;
+
+    // #profile додавання
+    function addHash() {
+      history.pushState(null, '', '#profile');
+      document.getElementById('url').textContent = window.location.href;
+    }
+
+    // Годинник
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Ім’я користувача
+    let username = localStorage.getItem('username');
+    if (!username) {
+      username = prompt("Введіть ваше ім’я:");
+      if (username) localStorage.setItem('username', username);
+    }
+
+    function showGreeting() {
+      const name = localStorage.getItem('username');
+      document.getElementById('greeting').textContent = name ? `Привіт, ${name}!` : '';
+    }
+
+    function changeName() {
+      const newName = prompt("Нове ім’я:");
+      if (newName) {
+        localStorage.setItem('username', newName);
+        showGreeting();
+      }
+    }
+
+    function clearName() {
+      localStorage.removeItem('username');
+      showGreeting();
+    }
+
+    showGreeting();
+
+    // Куки: останній візит
+    const lastVisit = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('lastVisit='));
+    const nowDate = new Date().toLocaleString();
+
+    if (lastVisit) {
+      alert(`Ваш останній візит: ${decodeURIComponent(lastVisit.split('=')[1])}`);
+    } else {
+      alert("Це ваш перший візит!");
+    }
+
+    document.cookie = `lastVisit=${encodeURIComponent(nowDate)}; path=/; max-age=31536000`;
+
+    // Google
+    function openGoogle() {
+      window.open("https://www.google.com", "_blank");
+    }
+
+    // Очистити куки
+    function clearCookies() {
+      const cookies = document.cookie.split(';');
+      cookies.forEach(cookie => {
+        const name = cookie.split('=')[0].trim();
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+      });
+      alert("Усі куки очищено!");
+    }
+
+    // Історія переходів
+    function goTo(hash) {
+      location.hash = hash;
+    }
+  </script>
+</body>
+</html>
